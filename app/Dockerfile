@@ -1,15 +1,28 @@
 FROM python:3
 
-# VOLUME [ "/data" ]
-RUN mkdir /src
-# RUN mkdir /data
+
+# this line of code will config the working dir of the container to be "/scr"
 WORKDIR /src
-COPY ./src/server.py .
+
+# this next 2 lines of code will copy the required files into the image's 
+# ...working dir
 COPY ./src/requirements.txt .
-# COPY ./api_to_interact_with_bank_db.py .
+COPY ./src/server.py .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# this line of code will install all the python modules listed in the file 
+# ..."requirements.txt"
+RUN pip3 --no-cache-dir install -r requirements.txt
 
-EXPOSE 5000
+# this line of code will expose port "8000" on the container created from this image
+EXPOSE 8000
 
-CMD [ "python", "./server.py" ]
+# this line of code sets the env variable in order to run the flask app with the "flask run" command
+ENV FLASK_APP=server.py
+
+# this line of code sets the running process of the containers that will be made from this image.
+# it will run the flask app and make it response to traffic on port 8000 coming on its interface.
+# it will be the equivalant of running the following in a the CLI:
+    # python -m flask run --port-8000 --host=0.0.0.0
+    # this was needed because the code for the flask app did not contain the "app.run()" method at the
+    # ...end of the file
+ENTRYPOINT ["python", "-m", "flask", "run", "--port=8000", "--host=0.0.0.0"]
