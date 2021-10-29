@@ -18,6 +18,7 @@ EXPOSE 8000
 
 # this line of code sets the env variable in order to run the flask app with the "flask run" command
 ENV FLASK_APP=server.py
+ENV FLASK_ENV=development
 
 # this line of code sets the running process of the containers that will be made from this image.
 # it will run the flask app and make it response to traffic on port 8000 coming on its interface.
