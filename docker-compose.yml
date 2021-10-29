@@ -5,9 +5,23 @@ services:
     # image: containerize_app
     build: ./app/
     ports:
-      - "80:8000"
+      - "8000"
     volumes:
-      - './app/src:/src'  
-  # nginx:
-    # container_name: containerize_nginx_1
-    # your code goes here ...
+      - './app/src:/src'
+      
+      
+  nginx:
+    container_name: containerize_nginx_1
+    build: ./nginx/
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - './nginx/files/:/etc/ssl/certs/'  
+
+
+  # test_nginx:
+  #   image: nginx
+  #   container_name: test_nginx
+  #   depends_on:
+  #     - "app"
